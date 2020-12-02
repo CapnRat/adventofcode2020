@@ -2,16 +2,16 @@ use crate::solutions::input::get_data;
 use regex::Regex;
 
 #[derive(Debug, Default, Eq, PartialEq)]
-struct Policy {
-    min: u32,
-    max: u32,
-    char: char
+pub struct Policy {
+    pub first: u32,
+    pub second: u32,
+    pub char: char
 }
 
 #[derive(Debug, Default, Eq, PartialEq)]
-struct Password {
-    policy: Policy,
-    value: String
+pub struct Password {
+    pub policy: Policy,
+    pub value: String
 }
 
 pub fn run() -> String {
@@ -25,7 +25,7 @@ pub fn run() -> String {
                 policy_char_count += 1;
             }
         }
-        if policy_char_count >= password.policy.min && policy_char_count <= password.policy.max {
+        if policy_char_count >= password.policy.first && policy_char_count <= password.policy.second {
             num_valid += 1;
         }
     }
@@ -33,7 +33,7 @@ pub fn run() -> String {
     num_valid.to_string()
 }
 
-fn parse_line(line: &str) -> Password {
+pub fn parse_line(line: &str) -> Password {
     lazy_static! {
         static ref RE: Regex = Regex::new(r"^(\d*)-(\d*) (.): (.*)$").unwrap();
     }
@@ -42,8 +42,8 @@ fn parse_line(line: &str) -> Password {
 
     Password {
         policy: Policy {
-            min: (&cap[1]).to_string().parse::<u32>().unwrap(),
-            max: (&cap[2]).to_string().parse::<u32>().unwrap(),
+            first: (&cap[1]).to_string().parse::<u32>().unwrap(),
+            second: (&cap[2]).to_string().parse::<u32>().unwrap(),
             char: (&cap[3]).to_string().chars().nth(0).unwrap()
         },
         value: (&cap[4]).to_string()
@@ -59,8 +59,8 @@ mod test {
     {
         let expected = Password {
             policy: Policy {
-                min: 1,
-                max: 3,
+                first: 1,
+                second: 3,
                 char: 'a'
             },
             value: "abcde".to_string()
