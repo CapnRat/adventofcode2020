@@ -13,3 +13,10 @@ pub fn get_data<T>(path: &str, parse_fn: impl Fn(&str) -> T) -> Vec<T> {
 
     data.lines().map(|s| parse_fn(s)).collect::<Vec<T>>()
 }
+
+pub fn get_chars(path: &str) -> Vec<char> {
+    let data = fs::read_to_string(path)
+        .expect("failed to load input");
+
+    data.chars().collect()
+}
