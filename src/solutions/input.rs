@@ -18,5 +18,5 @@ pub fn get_chars(path: &str) -> Vec<char> {
     let data = fs::read_to_string(path)
         .expect("failed to load input");
 
-    data.chars().collect()
+    data.chars().filter(|c| *c != '\r').collect()
 }

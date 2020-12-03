@@ -38,7 +38,6 @@ pub fn load_grid(chars: Vec<char>) -> (HashSet<(i32, i32)>, i32, i32) {
                 grid_x = 0;
                 grid_y += 1;
             },
-            '\r' => {}
             _ => panic!("Unexpected character in input")
         }
     }
