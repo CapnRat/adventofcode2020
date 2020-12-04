@@ -6,20 +6,22 @@ pub struct PassportData {
     pub raw_data: HashMap<String, String>
 }
 
-impl PassportData {
-    pub fn is_valid(&self) -> bool {
-        if self.raw_data.len() < 7 || self.raw_data.len() > 8 {
-            return false;
-        }
-
-        ["byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"].iter()
-            .filter(|&f| !self.raw_data.contains_key(&f.to_string())).count() == 0
-    }
-}
-
 pub fn run() -> String {
     let data = get_lines("input/input_04");
 
+    return parse_data(data).into_iter().filter(|p| is_valid(p)).count().to_string()
+}
+
+pub fn is_valid(passport_data: &PassportData) -> bool {
+    if passport_data.raw_data.len() < 7 || passport_data.raw_data.len() > 8 {
+        return false;
+    }
+
+    ["byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"].iter()
+        .filter(|&f| !passport_data.raw_data.contains_key(&f.to_string())).count() == 0
+}
+
+pub fn parse_data(data: Vec<String>) -> Vec<PassportData> {
     let mut passports: Vec<PassportData> = Vec::new();
     passports.push(PassportData { raw_data: HashMap::new() });
 
@@ -34,6 +36,5 @@ pub fn run() -> String {
                 passports.last_mut().unwrap().raw_data.insert(t.0, t.1);
             });
     }
-
-    return passports.into_iter().filter(|p| p.is_valid()).count().to_string()
+    passports
 }
