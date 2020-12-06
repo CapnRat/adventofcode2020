@@ -20,3 +20,8 @@ pub fn get_chars(path: &str) -> Vec<char> {
 
     data.chars().filter(|c| *c != '\r').collect()
 }
+
+pub fn get_data_string(path: &str) -> String {
+    fs::read_to_string(path)
+        .expect("failed to load input").replace("\r", "")
+}
