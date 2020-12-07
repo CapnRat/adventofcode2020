@@ -11,6 +11,7 @@ mod day_05_2;
 mod day_06_1;
 mod day_06_2;
 mod day_07_1;
+mod day_07_2;
 mod input;
 
 #[derive(Debug, Default)]
@@ -35,10 +36,11 @@ pub fn run_solution(solution: Solution) -> String {
         Solution { day:  6, star: 1 } => day_06_1::run(),
         Solution { day:  6, star: 2 } => day_06_2::run(),
         Solution { day:  7, star: 1 } => day_07_1::run(),
+        Solution { day:  7, star: 2 } => day_07_2::run(),
         _ => String::from("Unknown solution")
     }
 }
 
 pub fn get_latest() -> Solution {
-    Solution { day: 7, star: 1 }
+    Solution { day: 7, star: 2 }
 }

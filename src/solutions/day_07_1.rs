@@ -15,22 +15,29 @@ pub struct Rule {
 }
 
 pub fn run() -> String {
+    let input = "input/input_07";
+
+    let bag_rule_map = get_map(input);
+    let target_bag = Bag { adjective: String::from("shiny"), color: String::from("gold") };
+    bag_rule_map.iter().filter(|&b| contains_bag(&bag_rule_map, b.0, &target_bag)).count().to_string()
+}
+
+pub fn get_map(input: &str) -> HashMap<Bag, Vec<Rule>> {
     let mut bag_rule_map: HashMap<Bag, Vec<Rule>> = HashMap::new();
 
-    get_lines("input/input_07").into_iter()
+    get_lines(input).into_iter()
         .for_each(|line| {
             let splits = line.split(" contain ").collect_vec();
             let (adjective, color, _) = scan_fmt!(splits[0], "{} {} {}", String, String, String).unwrap();
-            bag_rule_map.insert(Bag {adjective, color}, splits[1].split(",").filter(|&s| s != "no other bags.")
+            bag_rule_map.insert(Bag { adjective, color }, splits[1].split(",").filter(|&s| s != "no other bags.")
                 .map(|rule_raw| {
                     let (count, adjective, color, _) = scan_fmt!(rule_raw, "{d} {} {} {}", u32, String, String, String).unwrap();
-                    Rule {count, bag: Bag { adjective, color }}
+                    Rule { count, bag: Bag { adjective, color } }
                 })
                 .collect_vec());
         });
 
-    let target_bag = Bag { adjective: String::from("shiny"), color: String::from("gold") };
-    bag_rule_map.iter().filter(|&b| contains_bag(&bag_rule_map, b.0, &target_bag)).count().to_string()
+    bag_rule_map
 }
 
 fn contains_bag (map: &HashMap<Bag, Vec<Rule>>, bag: &Bag, contains: &Bag) -> bool {
